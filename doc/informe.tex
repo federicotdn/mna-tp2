@@ -1,10 +1,11 @@
-\documentclass[12pt,a4paper]{article}
+	\documentclass[12pt,a4paper]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{makeidx}
 \usepackage{amssymb}
+\usepackage{hyperref}
 
 \title{TPE Métodos Numéricos Avanzados\\Speech Compression}
 \author{Federico Tedin - 53048\\Javier Fraire - 53023}
@@ -14,10 +15,11 @@
 \begin{document}
 \maketitle
 
+\renewcommand{\abstractname}{Resumen:}
 \begin{abstract}
 
 \centering
-Compresión de habla utilizando la FFT (Fast Fourier Transform) y codificación Huffman, en archivos .WAV.
+Compresión de habla utilizando la FFT (Fast Fourier Transform) y codificación Huffman, en archivos WAVE.
 
 \end{abstract}
 
@@ -30,6 +32,26 @@ En éste trabajo práctico se muestra como es posible comprimir un archivo conte
 
 \section{Metodología}
 
-adadf
+Para comprimir un archivo de audio, primero es necesario grabar algún sonido utilizando un \emph{software} de grabado de sonido (para éste trabajo, se decidió utilizar \emph{Audacity}).  De acuerdo con el enunciado, se debe utilizar un formato que no utilize compresión, y que tenga un sólo canal.  Se decidió utilizar el formato WAVE \cite{wave}, ya que tiene una estructura simple, y porque ya existen librerías de Python que permiten la lectura y escritura de éstos archivos.
+
+	Los archivos WAVE (extensión \emph{.wav}) almacenan un valor (‘‘sample’’) de sonido por cada intervalo de tiempo $T$, donde $T$ es recíproco a la frecuencia de muestreo $f$.  En éste trabajo, se tomó $f = 8000 Hz$.  Los archivos utilizados en éste trabajo utilizan samples de tipo \emph{PCM} de 16 bits, con signo.  Entonces, un archivo de audio de $1$ segundo tendría exactamente $8000$ muestras, lo cual resultaría en un tamaño total de $8000 * 16 = 128000\: bits = 16000\:	bytes$.
+
+	Los métodos utilizados estan basados mayormente en los que se explican en \cite{rajesh}, y en el enunciado del problema.
+
+\clearpage
+
+\begin{thebibliography}{9}
+  
+\bibitem{wave}
+  Scott Wilson,
+  WAVE PCM soundfile format,
+  \url{https://ccrma.stanford.edu/courses/422/projects/WaveFormat/}
+
+\bibitem{rajesh}
+  G. Rajesh, A. Kumar and K. Ranjeet,
+  \emph{Speech Compression using Different Transform Techniques}.
+  Indian Institute of Information Technology, Design \& Manufacturing Jabalpur,
+
+\end{thebibliography}
 
 \end{document}
