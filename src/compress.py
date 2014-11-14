@@ -6,17 +6,16 @@ def compress(file_name, L, epsilon):
 	N = f.getnframes()
 	ks = get_samples(f)
 
-
 	print('Compressing...')
 
 	alphas = get_alphas(f, epsilon, ks)
 
 	min_val, max_val = get_max_and_min(alphas)
 	
-	real_alphas, imag_alphas = quantize(alphas, min_val, max_val, max_size)
+	real_alphas, imag_alphas = quantisize(alphas, min_val, max_val, max_size)
 
-	# for i in range(1000):
-	# 	print('real: ' + str(real_alphas[i]) + ' imag: ' + str(imag_alphas[i]))
+	for i in range(100):
+		print('real: ' + str(real_alphas[i]) + ' imag: ' + str(imag_alphas[i]))
 
 	compressed_bits = huffman.estimate(real_alphas + imag_alphas)
 	print('Compressed: ' + str(compressed_bits) + ' bits')
@@ -25,21 +24,20 @@ def compress(file_name, L, epsilon):
 
 	print('Uncompressing...')
 
-	new_alphas = de_quantize(real_alphas, imag_alphas, min_val, max_val, max_size)
+	new_alphas = de_quantisize(real_alphas, imag_alphas, min_val, max_val, max_size)
 
-	# for i in range(10000):
-	# 	print(new_alphas[i])
 	output_name = os.path.splitext(file_name)[0] + '_compressed.wav'
 	output = wave.open(output_name, 'wb')
 	output.setparams(f.getparams())
 	
 	inverse_fft = numpy.fft.ifft(new_alphas)
 
-	dis = distortion(ks, (int(x.real) for x in inverse_fft))/N
+	dis = math.sqrt(distortion(ks, (int(x.real) for x in inverse_fft))/N)
 	print('Distortion: ' + str(dis))
 
 	for num in inverse_fft:
-		b = int(num.real).to_bytes(2, byteorder = 'little', signed = True)
+		truncate = clamp(int(num.real), -32768, 32767)
+		b = truncate.to_bytes(2, byteorder = 'little', signed = True)
 		output.writeframes(b)
 
 	print('Saved as audio ' + output_name)
@@ -48,23 +46,24 @@ def distortion(original, compressed):
 	distortion = 0
 	for o, c in zip(original, compressed):
 		distortion += math.pow((o - c), 2)
-	return math.sqrt(distortion)
+	return distortion
 
+def clamp(n, minn, maxx):
+	return max(min(maxx, n), minn)
 
-def quantize(alphas, min_val, max_val, max_size):
+def quantisize(alphas, min_val, max_val, max_size):
 	real_alphas = []
 	imag_alphas = []
-	fn  = lambda x: int(((x - min_val)/(max_val - min_val))* max_size)
+	fn  = lambda x: round((((x - min_val)/(max_val - min_val))* max_size))
 
 	for alpha in alphas:
 		real_alphas.append(fn(alpha.real))
 		imag_alphas.append(fn(alpha.imag))
 	return real_alphas, imag_alphas
 
-def de_quantize(real_alphas, imag_alphas, min_val, max_val, max_size):
+def de_quantisize(real_alphas, imag_alphas, min_val, max_val, max_size):
 	fn = lambda x: ((x/max_size)*(max_val - min_val)) + min_val
 	new_alphas = []
-	print('LEN: ' + str(len(real_alphas)))
 	for i in range(len(real_alphas)):
 		new_alphas.append(complex(fn(real_alphas[i]), fn(imag_alphas[i])))
 	new_alphas.extend(new_alphas[1:])
