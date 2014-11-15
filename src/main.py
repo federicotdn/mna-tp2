@@ -3,9 +3,9 @@ import compress, sys
 def print_help():
 	print('Use: python3 main.py compress file_name L epsilon')
 	print(' - Example: python3 main.py compress \'audio/sample1.wav\' 4 0.1')
-	print('Use: python3 main.py plot_epsilon L start end step number of samples')
+	print('Use: python3 main.py plot_epsilon L start end step number_of_samples')
 	print(' - Example: python3 main.py plot_epsilon 4 0 10 0.5 30')
-	print('Use: python3 main.py plot_L epsilon number of samples')
+	print('Use: python3 main.py plot_L epsilon number_of_samples')
 	print(' - Example: python3 main.py plot_L 0.1 30')
 
 def main():
