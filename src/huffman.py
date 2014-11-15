@@ -28,6 +28,8 @@ def estimate(v):
     for symbol in symbols:
         total_bits += len(huff_dict[symbol])
 
+    total_bits+= 64*2 + 32 + 8
+
     for k, v in list(counter.items()):
          total_bits += len(huff_dict[k])*v
     return total_bits
