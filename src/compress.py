@@ -18,7 +18,7 @@ def compress(file_name, L, epsilon):
     compressed_bits = huffman.estimate(real_alphas + imag_alphas)
     print('Compressed: ' + str(compressed_bits) + ' bits')
     print('Uncompressed: ' + str(N*16) + ' bits')
-    print('Compression ratio: ' + str(((N*16)/compressed_bits)))
+    print('Compression ratio percentage: ' + str(((N*16)/compressed_bits) * 100))
 
     print('Uncompressing...')
 
@@ -61,11 +61,12 @@ def plot_epsilon(L, start, end, step, n):
             dis += aux_dis
             compression_ratio += aux_cr
         print('Calculated for epsilon = ' + str(epsilon))
+
         cr_array.append(compression_ratio/n)
         dis_array.append(dis/n)
     print('Plotting...')
-    plot(cr_array, epsilons, 'Epsilon', 'Compression ratio', 'compression_ratio_epsilon', 6, start, end, step, 'Compression rate vs. epsilon')
-    plot(dis_array, epsilons, 'Epsilon', 'Distortion', 'distortion_epsilon', max(dis_array)//20, start, end, step, 'Distortion vs. epsilon')
+    plot(cr_array, epsilons, 'Epsilon', 'Compression ratio', 'compression_ratio_epsilon', 0.1, start, end, step, 'Compression rate vs. epsilon')
+    plot(dis_array, epsilons, 'Epsilon', 'Distortion', 'distortion_epsilon', 0.1, start, end, step, 'Distortion vs. epsilon')
     print('Plotted')
 
 def plot_L(epsilon, n):
@@ -84,26 +85,26 @@ def plot_L(epsilon, n):
         cr_array.append(compression_ratio/n)
         dis_array.append(dis/n)
     print('Plotting...')
-    plot(cr_array, [1,2,3,4,5,6,7,8], 'L = number of bits', 'Compression ratio', 'compression_ratio_L', 3, 1, 9, 1, 'Compression rate vs. L')
-    plot(dis_array, [1,2,3,4,5,6,7,8], 'L = number of bits', 'Distortion', 'distortion_L', max(dis_array)//20, 1, 9, 1, 'Distortion vs. L')
+    plot(cr_array, [1,2,3,4,5,6,7,8], 'L = number of bits', 'Compression ratio', 'compression_ratio_L', 1.5, 1, 9, 1, 'Compression rate vs. L')
+    plot(dis_array, [1,2,3,4,5,6,7,8], 'L = number of bits', 'Distortion', 'distortion_L', max(dis_array)/10, 1, 9, 1, 'Distortion vs. L')
     print('Plotted')
 
 def plot(array, x, x_label, ylabel, file_name, label_inc, start, end, step, title):
     y_max = max(array)
-    y_max += label_inc*2
-    y_min = min(min(array)-50 , 0)
+    y_max += label_inc*5
+    y_min = max(min(array)-(label_inc*5), 0)
     plt.figure().suptitle(title)
-    plt.axis([x[0] - (len(x)/4*step) , x[-1] + (len(x)/4*step), y_min, y_max])
     plt.ylabel(ylabel)
     plt.xlabel(x_label)
     plt.plot(x, array, 'ro')
+    plt.axis([x[0] - step , x[-1] + step, y_min, y_max])
     prev_val = 0
     alternate = False
     for i,j in zip(numpy.arange(start, end, step),array):
         if abs(prev_val - j) > 0.0001 :
-            plt.annotate(str(round(j,1)),xy=(i-step/4, j + label_inc))
+            plt.annotate(str(round(j,2)),xy=(i-step/2, j + label_inc))
         prev_val=j
-        label_inc=-label_inc
+        label_inc= -label_inc
     plt.savefig('graphs/' + file_name + '.png', format = 'png')
     plt.clf()
     
