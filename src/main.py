@@ -41,17 +41,8 @@ def main():
 			raise Error()
 
 	except:
-		print('Error processing paramters.')
+		print('Error processing parameters.')
 		print_help()
 
-
-				
-	
-		
-
-
-
-
-	
 if __name__ == '__main__':
 	main()
