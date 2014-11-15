@@ -65,7 +65,7 @@ def plot_epsilon(L, start, end, step, n):
         cr_array.append(compression_ratio/n)
         dis_array.append(dis/n)
     print('Plotting...')
-    plot(cr_array, epsilons, 'Epsilon', 'Compression ratio', 'compression_ratio_epsilon', 0.1, start, end, step, 'Compression rate vs. epsilon')
+    plot(cr_array, epsilons, 'Epsilon', 'Compression ratio', 'compression_ratio_epsilon', 0.1, start, end, step, 'Compression ratio vs. epsilon')
     plot(dis_array, epsilons, 'Epsilon', 'Distortion', 'distortion_epsilon', 0.1, start, end, step, 'Distortion vs. epsilon')
     print('Plotted')
 
@@ -85,7 +85,7 @@ def plot_L(epsilon, n):
         cr_array.append(compression_ratio/n)
         dis_array.append(dis/n)
     print('Plotting...')
-    plot(cr_array, [1,2,3,4,5,6,7,8], 'L = number of bits', 'Compression ratio', 'compression_ratio_L', 1.5, 1, 9, 1, 'Compression rate vs. L')
+    plot(cr_array, [1,2,3,4,5,6,7,8], 'L = number of bits', 'Compression ratio', 'compression_ratio_L', 1.5, 1, 9, 1, 'Compression ratio vs. L')
     plot(dis_array, [1,2,3,4,5,6,7,8], 'L = number of bits', 'Distortion', 'distortion_L', max(dis_array)/10, 1, 9, 1, 'Distortion vs. L')
     print('Plotted')
 

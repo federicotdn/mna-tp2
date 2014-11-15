@@ -34,7 +34,7 @@ Por ejemplo,
 
 	python3 main.py compress sample.wav 4 0.1
 	
-La carpeta audio/ contiene los archivos de audio de prueba, y los generados por el programa.  Los graficos generados se hayan en graphs/.
+La carpeta audio/ contiene 30 archivos de audio de prueba, y los generados por el programa.  Los graficos generados se hayan en graphs/.
 	
 En caso de obtener el error: ‘ValueError: unknown locale: UTF-8' al ejecutar, configurar las siguientes variables
 de entorno: 
